@@ -13,28 +13,26 @@ const players = {
 };
 
 const winningPosition = [
-     // F
-     [0, 1, 2],
-     [3, 4, 5],
-     [6, 7, 8],
-     // C
-     [0, 3, 6],
-     [1, 4, 7],
-     [2, 5, 8],
-     // Diagonal
-     [0, 4, 8],
-     [2, 4, 6]
+    // Filas
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    // Columnas
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    // Diagonales
+    [0, 4, 8],
+    [2, 4, 6]
 ];
 
 startGame();
 
 function startGame() {
     createBoard();
-
     messageTurn.textContent = isTurnX ? 'X' : 'O';
     isTurnX = true;
     turn = 0;
-
     endGame.classList.remove('show');
 }
 
@@ -63,11 +61,18 @@ function handleGame(e) {
         return;
     }
 
-    if (turn === maxTurn) {
-        showEndGame(false);
+    if (!hasWinningPossibility()) {
+        removeAllExceptLast(currentCell);
+        turn = 1;  // Reiniciar el contador de turnos a 1 ya que solo queda una ficha
+        changeTurn();  // Cambiar el turno antes de salir de la función
+        return;
     }
 
-    changeTurn();
+    if (turn === maxTurn) {
+        showEndGame(false);
+    } else {
+        changeTurn();
+    }
 }
 
 function drawShape(element, newClass) {
@@ -88,12 +93,12 @@ function checkWinner(currentPlayer) {
         });
     });
 
-    if (!winner) {
-        return false;
+    if (winner) {
+        showEndGame(true);
+        return true;
     }
 
-    showEndGame(true);
-    return true;
+    return false;
 }
 
 function showEndGame(winner) {
@@ -106,5 +111,39 @@ function showEndGame(winner) {
     }
 }
 
-//Evento de botón
+function hasWinningPossibility() {
+    const cells = document.querySelectorAll('.cell');
+    const positions = Array.from(cells).map(cell => {
+        if (cell.classList.contains(players.x)) return players.x;
+        if (cell.classList.contains(players.o)) return players.o;
+        return null;
+    });
+
+    return winningPosition.some(array => {
+        const [a, b, c] = array;
+        const values = [positions[a], positions[b], positions[c]];
+        return values.includes(null) || 
+               (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
+               (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
+    });
+}
+
+function removeAllExceptLast(lastCell) {
+    const cells = document.querySelectorAll('.cell');
+
+    cells.forEach(cell => {
+        if (cell !== lastCell) {
+            cell.classList.remove(players.x, players.o);
+        }
+    });
+
+    // Permitir que las celdas se puedan hacer clic nuevamente
+    cells.forEach(cell => {
+        if (cell !== lastCell) {
+            cell.addEventListener('click', handleGame, { once: true });
+        }
+    });
+}
+
+// Evento de botón
 buttonReset.addEventListener('click', startGame);
