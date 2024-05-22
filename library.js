@@ -12,6 +12,11 @@ const players = {
     o: 'circle'
 };
 
+const images = {
+    cross: 'pene.png',  // Ruta a la imagen X
+    circle: 'vagina.png'  // Ruta a la imagen O
+};
+
 const winningPosition = [
     // Filas
     [0, 1, 2],
@@ -76,7 +81,9 @@ function handleGame(e) {
 }
 
 function drawShape(element, newClass) {
-    element.classList.add(newClass);
+    const img = document.createElement('img');
+    img.src = images[newClass];
+    element.appendChild(img);
 }
 
 function changeTurn() {
@@ -89,7 +96,7 @@ function checkWinner(currentPlayer) {
 
     const winner = winningPosition.some(array => {
         return array.every(position => {
-            return cells[position].classList.contains(currentPlayer);
+            return cells[position].querySelector('img')?.src.includes(images[currentPlayer]);
         });
     });
 
@@ -114,8 +121,9 @@ function showEndGame(winner) {
 function hasWinningPossibility() {
     const cells = document.querySelectorAll('.cell');
     const positions = Array.from(cells).map(cell => {
-        if (cell.classList.contains(players.x)) return players.x;
-        if (cell.classList.contains(players.o)) return players.o;
+        const img = cell.querySelector('img');
+        if (img && img.src.includes(images.cross)) return players.x;
+        if (img && img.src.includes(images.circle)) return players.o;
         return null;
     });
 
@@ -123,8 +131,8 @@ function hasWinningPossibility() {
         const [a, b, c] = array;
         const values = [positions[a], positions[b], positions[c]];
         return values.includes(null) || 
-               (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
-               (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
+            (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
+            (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
     });
 }
 
@@ -133,7 +141,7 @@ function removeAllExceptLast(lastCell) {
 
     cells.forEach(cell => {
         if (cell !== lastCell) {
-            cell.classList.remove(players.x, players.o);
+            cell.innerHTML = '';
         }
     });
 
