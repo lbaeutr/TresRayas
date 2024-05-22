@@ -67,7 +67,7 @@ function handleGame(e) {
     }
 
     if (turn === maxTurn) {
-        showEndGame(false);
+        startGame();  // Reiniciar el juego automáticamente en caso de empate
     } else {
         changeTurn();
     }
@@ -94,6 +94,7 @@ function checkWinner(player) {
     });
 
     if (winner) {
+        showEndGame(true);
         return true;
     }
 
@@ -101,34 +102,36 @@ function checkWinner(player) {
 }
 
 function showEndGame(winner) {
-    endGame.classList.add('show');
-
     if (winner) {
+        endGame.classList.add('show');
         endGameResult.textContent = `¡${isTurnX ? 'X' : 'O'} ha ganado la partida!`;
     } else {
-        endGameResult.textContent = 'El juego ha quedado en tablas';
+        startGame();  // Reiniciar automáticamente en caso de empate
     }
 }
 
 function playAudioOnFirstClick() {
+    console.log('Reproduciendo audio...');
     audio.play().catch(error => {
         console.log('Error al reproducir el audio:', error);
     });
 }
 
-function removeAllExceptLast(lastCell) {
+function hasWinningPossibility() {
     const cells = document.querySelectorAll('.cell');
-
-    cells.forEach(cell => {
-        if (cell !== lastCell) {
-            cell.innerHTML = '';
-        }
+    const positions = Array.from(cells).map(cell => {
+        const img = cell.querySelector('img');
+        if (img && img.src.includes(images.cross)) return players.x;
+        if (img && img.src.includes(images.circle)) return players.o;
+        return null;
     });
 
-    cells.forEach(cell => {
-        if (cell !== lastCell) {
-            cell.addEventListener('click', handleGame, { once: true });
-        }
+    return winningPosition.some(array => {
+        const [a, b, c] = array;
+        const values = [positions[a], positions[b], positions[c]];
+        return values.includes(null) || 
+            (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
+            (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
     });
 }
 
