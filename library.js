@@ -1,3 +1,4 @@
+const audio = document.getElementById('musica-fondo');
 const gameBoard = document.querySelector('.game__board');
 const messageTurn = document.querySelector('.game__turn');
 const endGame = document.querySelector('.endgame');
@@ -13,20 +14,17 @@ const players = {
 };
 
 const images = {
-    cross: 'pene.png',  // Ruta a la imagen X
-    circle: 'vagina.png'  // Ruta a la imagen O
+    cross: 'images/pene.png',
+    circle: 'images/vagina.png'
 };
 
 const winningPosition = [
-    // Filas
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
-    // Columnas
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    // Diagonales
     [0, 4, 8],
     [2, 4, 6]
 ];
@@ -39,13 +37,14 @@ function startGame() {
     isTurnX = true;
     turn = 0;
     endGame.classList.remove('show');
+    gameBoard.addEventListener('click', playAudioOnFirstClick, { once: true });
 }
 
 function createBoard() {
     const cells = 9;
 
-    while (gameBoard.firstElementChild) {
-        gameBoard.firstElementChild.remove();
+    while (gameBoard.firstChild) {
+        gameBoard.removeChild(gameBoard.firstChild);
     }
 
     for (let i = 0; i < cells; i++) {
@@ -63,13 +62,7 @@ function handleGame(e) {
     drawShape(currentCell, currentTurn);
 
     if (checkWinner(currentTurn)) {
-        return;
-    }
-
-    if (!hasWinningPossibility()) {
-        removeAllExceptLast(currentCell);
-        turn = 1;  // Reiniciar el contador de turnos a 1 ya que solo queda una ficha
-        changeTurn();  // Cambiar el turno antes de salir de la función
+        showEndGame(true);
         return;
     }
 
@@ -80,9 +73,9 @@ function handleGame(e) {
     }
 }
 
-function drawShape(element, newClass) {
+function drawShape(element, player) {
     const img = document.createElement('img');
-    img.src = images[newClass];
+    img.src = images[player];
     element.appendChild(img);
 }
 
@@ -91,17 +84,16 @@ function changeTurn() {
     messageTurn.textContent = isTurnX ? 'X' : 'O';
 }
 
-function checkWinner(currentPlayer) {
+function checkWinner(player) {
     const cells = document.querySelectorAll('.cell');
 
     const winner = winningPosition.some(array => {
         return array.every(position => {
-            return cells[position].querySelector('img')?.src.includes(images[currentPlayer]);
+            return cells[position].querySelector('img')?.src.includes(images[player]);
         });
     });
 
     if (winner) {
-        showEndGame(true);
         return true;
     }
 
@@ -118,21 +110,9 @@ function showEndGame(winner) {
     }
 }
 
-function hasWinningPossibility() {
-    const cells = document.querySelectorAll('.cell');
-    const positions = Array.from(cells).map(cell => {
-        const img = cell.querySelector('img');
-        if (img && img.src.includes(images.cross)) return players.x;
-        if (img && img.src.includes(images.circle)) return players.o;
-        return null;
-    });
-
-    return winningPosition.some(array => {
-        const [a, b, c] = array;
-        const values = [positions[a], positions[b], positions[c]];
-        return values.includes(null) || 
-            (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
-            (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
+function playAudioOnFirstClick() {
+    audio.play().catch(error => {
+        console.log('Error al reproducir el audio:', error);
     });
 }
 
@@ -145,7 +125,6 @@ function removeAllExceptLast(lastCell) {
         }
     });
 
-    // Permitir que las celdas se puedan hacer clic nuevamente
     cells.forEach(cell => {
         if (cell !== lastCell) {
             cell.addEventListener('click', handleGame, { once: true });
