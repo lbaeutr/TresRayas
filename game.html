@@ -7,24 +7,26 @@
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    
     <div class="scoreboard">
-        <div class="scoreboard__player" style="height: 30%;">
-            <h3>Jugador X</h3>
+        <div class="scoreboard__player" data-player="x" style="height: 30%;">
+            
+            <img src="images/pene.png" alt="Cross" class="scoreboard__image">
             <p class="scoreboard__score" data-player="x">0</p>
         </div>
         <div class="game">
-            <article data-id="game__message">
-                <h2>El turno es para... 
-                    <span class="game__turn"></span>
-                </h2>
-            </article>
+            
             <section class="game__board"></section>
         </div>
-        <div class="scoreboard__player" style="height: 30%;">
-            <h3>Jugador O</h3>
+        <div class="scoreboard__player" data-player="o" style="height: 30%;">
+            
+            <img src="images/vagina.png" alt="Circle" class="scoreboard__image">
             <p class="scoreboard__score" data-player="o">0</p>
+            <span class="game__turn"; ></span>
         </div>
     </div>
+    
+    
     <section class="endgame">
         <div class="endgame__show">
             <h1 class="endgame__result">¡!</h1>

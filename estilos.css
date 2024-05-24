@@ -17,15 +17,15 @@ body {
     height: 100vh;
 }
 
-h2{
-    color:#2c3e50;
+h2 {
+    color: #2c3e50;
 }
 
 .game {
     display: grid;
     gap: 1rem;
     place-content: center;
-    background-color: #678eb7;
+    background-color: antiquewhite;
     background-image: url("data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 70 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23070e14' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 0h35v35H0V0zm5 5h25v25H5V5zm5 5h15v15H10V10zm5 5h5v5h-5v-5zM40 5h25v25H40V5zm5 5h15v15H45V10zm5 5h5v5h-5v-5zM70 35H35v35h35V35zm-5 5H40v25h25V40zm-5 5H45v15h15V45zm-5 5h-5v5h5v-5zM30 40H5v25h25V40zm-5 5H10v15h15V45zm-5 5h-5v5h5v-5z'/%3E%3C/g%3E%3C/svg%3E");
     padding: 2rem;
     border-radius: 10px;
@@ -52,7 +52,7 @@ h2{
     transition: transform 0.2s ease;
 }
 
-.cell img{
+.cell img {
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
@@ -158,13 +158,16 @@ h2{
 }
 
 .scoreboard__player {
-    background-color: #678eb7;
+    background-color: antiquewhite;
     padding: 0.5rem 1rem;
     border-radius: 10px;
     text-align: center;
-    color: #ecf0f1;
+    color: #383b3c;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     font-size: 0.9rem;
+    margin-top: 2rem; 
+    max-width: auto;
+    max-height: auto;/* Ajusta este valor según tus necesidades */
 }
 
 .scoreboard__player h3 {
@@ -173,6 +176,18 @@ h2{
 }
 
 .scoreboard__score {
-    font-size: 1.2rem;
+    font-size: 4rem;
     font-weight: bold;
+}
+
+.scoreboard__image {
+    width: 150px; /* Ajusta este valor según el tamaño deseado */
+    height: 150px; /* Ajusta este valor según el tamaño deseado */
+    object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
+    margin-bottom: 0.5rem;
+}
+
+.scoreboard__player--active {
+    border: 3px solid #494138; /* Cambia el color según tus preferencias */
+    box-shadow: 0 0 100px rgba(188, 197, 244, 0.8); /* Efecto de brillo */
 }

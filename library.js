@@ -33,15 +33,20 @@ const winningPosition = [
     [2, 4, 6]
 ];
 
+// Select player elements
+const playerXElement = document.querySelector('.scoreboard__player[data-player="x"]');
+const playerOElement = document.querySelector('.scoreboard__player[data-player="o"]');
+
 startGame();
 
 function startGame() {
     createBoard();
-    messageTurn.textContent = isTurnX ? 'X' : 'O';
+    //messageTurn.textContent = isTurnX ? 'X' : 'O';
     isTurnX = true;
     turn = 0;
     endGame.classList.remove('show');
     gameBoard.addEventListener('click', playAudioOnFirstClick, { once: true });
+    highlightCurrentPlayer(); // Highlight the current player at the start
 }
 
 function createBoard() {
@@ -86,7 +91,8 @@ function drawShape(element, player) {
 
 function changeTurn() {
     isTurnX = !isTurnX;
-    messageTurn.textContent = isTurnX ? 'X' : 'O';
+    //messageTurn.textContent = isTurnX ? 'X' : 'O';
+    highlightCurrentPlayer(); // Highlight the current player after the turn changes
 }
 
 function checkWinner(player) {
@@ -113,7 +119,7 @@ function showEndGame(winner) {
 
 function updateScore(player) {
     playerScores[player]++;
-    document.querySelector(`[data-player="${player}"]`).textContent = playerScores[player];
+    document.querySelector(`.scoreboard__player[data-player="${player}"] .scoreboard__score`).textContent = playerScores[player];
 }
 
 function playAudioOnFirstClick() {
@@ -123,4 +129,15 @@ function playAudioOnFirstClick() {
     });
 }
 
+function highlightCurrentPlayer() {
+    if (isTurnX) {
+        playerXElement.classList.add('scoreboard__player--active');
+        playerOElement.classList.remove('scoreboard__player--active');
+    } else {
+        playerXElement.classList.remove('scoreboard__player--active');
+        playerOElement.classList.add('scoreboard__player--active');
+    }
+}
+
 buttonReset.addEventListener('click', startGame);
+
