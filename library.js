@@ -18,8 +18,8 @@ const players = {
 };
 
 const images = {
-    cross: 'images/pene.png',
-    circle: 'images/vagina.png'
+    cross: 'images/milei.png',
+    circle: 'images/pedro.png'
 };
 
 const winningPosition = [
@@ -93,7 +93,17 @@ function changeTurn() {
     isTurnX = !isTurnX;
     //messageTurn.textContent = isTurnX ? 'X' : 'O';
     highlightCurrentPlayer(); // Highlight the current player after the turn changes
+    
+    // Remover la clase 'scoreboard__player--active' de todos los jugadores
+    document.querySelectorAll('.scoreboard__player').forEach(player => {
+        player.classList.remove('scoreboard__player--active');
+    });
+    
+    // Agregar la clase 'scoreboard__player--active' al jugador actual
+    const currentPlayerElement = document.querySelector(`.scoreboard__player[data-player="${isTurnX ? 'x' : 'o'}"]`);
+    currentPlayerElement.classList.add('scoreboard__player--active');
 }
+
 
 function checkWinner(player) {
     const cells = document.querySelectorAll('.cell');
@@ -110,12 +120,30 @@ function checkWinner(player) {
 function showEndGame(winner) {
     if (winner) {
         endGame.classList.add('show');
-        endGameResult.textContent = `¡${isTurnX ? 'X' : 'O'} ha ganado la partida!`;
+        endGameResult.textContent = `¡${isTurnX ? 'Milei' : 'Perro'} ha ganado la partida!\n `;
+        playMusicForResult(isTurnX ? 'x' : 'o');
     } else {
         endGame.classList.add('show');
         endGameResult.textContent = '¡Empate!';
+        // Aquí podrías reproducir música para empate si deseas
     }
 }
+
+function playMusicForResult(player) {
+    const musicForXWin = new Audio('music/audio miley.mp3');
+    const musicForOWin = new Audio('music/PedroPedro.mp3');
+
+    if (player === 'x') {
+        musicForXWin.play().catch(error => {
+            console.log('Error al reproducir la música para la victoria de X:', error);
+        });
+    } else if (player === 'o') {
+        musicForOWin.play().catch(error => {
+            console.log('Error al reproducir la música para la victoria de O:', error);
+        });
+    }
+}
+
 
 function updateScore(player) {
     playerScores[player]++;
@@ -133,11 +161,15 @@ function highlightCurrentPlayer() {
     if (isTurnX) {
         playerXElement.classList.add('scoreboard__player--active');
         playerOElement.classList.remove('scoreboard__player--active');
+        playerOElement.classList.add('scoreboard__player2--active'); // Agregar la clase scoreboard__player2--active cuando sea el turno de O
     } else {
         playerXElement.classList.remove('scoreboard__player--active');
         playerOElement.classList.add('scoreboard__player--active');
+        playerOElement.classList.remove('scoreboard__player2--active'); // Remover la clase scoreboard__player2--active cuando sea el turno de X
     }
 }
+
+
 
 buttonReset.addEventListener('click', startGame);
 

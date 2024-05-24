@@ -30,6 +30,7 @@ h2 {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); 
+    align-items: center;
 }
 
 .game__board {
@@ -39,6 +40,7 @@ h2 {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
+    align-items: center;
 }
 
 .cell {
@@ -153,6 +155,7 @@ h2 {
 .scoreboard {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     margin-bottom: 1rem;
     width: 100%;
 }
@@ -173,13 +176,15 @@ h2 {
     background-size: cover;
     background-position: center;
     background-image: url('images/Flag_of_Argentina.svg');
+    margin-left: 100px;
 }
 
 .scoreboard__player[data-player="o"] {
     background-image: url('images/Bandera_de_España.svg');
     background-size: cover;
     background-position-x: center;
-    background-position-y: 50%;
+    background-position-y: -20px;
+    margin-right: 100px;
 }
 .scoreboard__player h3 {
     margin-bottom: 0.3rem;
@@ -191,14 +196,46 @@ h2 {
     font-weight: bold;
 }
 
+.milei{
+    width: 150px; /* Ajusta este valor según el tamaño deseado */
+    height: 150px; /* Ajusta este valor según el tamaño deseado */
+    object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
+    margin-bottom: 0.5rem;
+    position:relative;
+    top: 18px;
+}
+
 .scoreboard__image {
     width: 150px; /* Ajusta este valor según el tamaño deseado */
     height: 150px; /* Ajusta este valor según el tamaño deseado */
     object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
     margin-bottom: 0.5rem;
+    position:relative;
+    top: 24px;
 }
 
 .scoreboard__player--active {
     border: 3px solid #494138; /* Cambia el color según tus preferencias */
     box-shadow: 0 0 100px rgba(188, 197, 244, 0.8); /* Efecto de brillo */
+}
+
+/* Definir la animación */
+@keyframes bounce {
+    0% { transform: scale(); }
+    50% { transform: scale(1.21); }
+    100% { transform: scale(1); }
+}
+
+/* Aplicar la animación a todas las imágenes de marcador */
+.scoreboard__image {
+    transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
+}
+.scoreboard__image2 {
+    transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
+}
+
+
+/* Agregar la clase de animación cuando sea el turno del jugador */
+.scoreboard__player--active .scoreboard__image {
+    animation: bounce 1s infinite alternate; /* Aplicar la animación solo cuando el jugador está activo */
 }
