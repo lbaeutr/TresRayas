@@ -196,14 +196,46 @@ h2 {
     font-weight: bold;
 }
 
-.milei{
-    width: 150px; /* Ajusta este valor según el tamaño deseado */
-    height: 150px; /* Ajusta este valor según el tamaño deseado */
-    object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
-    margin-bottom: 0.5rem;
-    position:relative;
-    top: 18px;
+.scoreboard__player.player-x {
+    margin-left: 100px; /* Ajusta la posición según sea necesario */
 }
+
+.scoreboard__player.player-o {
+    margin-right: 100px; /* Ajusta la posición según sea necesario */
+}
+
+/* Si necesitas ajustar la posición de las imágenes específicamente */
+.scoreboard__player.player-x .scoreboard__image {
+    position: relative;
+    top: 17px; /* Ajusta la posición según sea necesario */
+}
+
+.scoreboard__player.player-o .scoreboard__image {
+    position: relative;
+    top: 24px; /* Ajusta la posición según sea necesario */
+}
+
+/* Animaciones específicas para cada jugador */
+.scoreboard__player--active.player-x .scoreboard__image {
+    animation: bounce-x 1s infinite alternate;
+}
+
+.scoreboard__player--active.player-o .scoreboard__image {
+    animation: bounce-o 1s infinite alternate;
+}
+
+@keyframes bounce-x {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes bounce-o {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 
 .scoreboard__image {
     width: 150px; /* Ajusta este valor según el tamaño deseado */
@@ -230,7 +262,7 @@ h2 {
 .scoreboard__image {
     transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
 }
-.scoreboard__image2 {
+.scoreboard__milei {
     transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
 }
 
