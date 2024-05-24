@@ -4,6 +4,10 @@ const messageTurn = document.querySelector('.game__turn');
 const endGame = document.querySelector('.endgame');
 const endGameResult = document.querySelector('.endgame__result');
 const buttonReset = document.querySelector('.endgame__button');
+const playerScores = {
+    x: 0,
+    o: 0
+};
 
 let isTurnX = true;
 let turn = 0;
@@ -62,12 +66,13 @@ function handleGame(e) {
     drawShape(currentCell, currentTurn);
 
     if (checkWinner(currentTurn)) {
+        updateScore(isTurnX ? 'x' : 'o');
         showEndGame(true);
         return;
     }
 
     if (turn === maxTurn) {
-        startGame();  // Reiniciar el juego automáticamente en caso de empate
+        showEndGame(false);
     } else {
         changeTurn();
     }
@@ -93,12 +98,7 @@ function checkWinner(player) {
         });
     });
 
-    if (winner) {
-        showEndGame(true);
-        return true;
-    }
-
-    return false;
+    return winner;
 }
 
 function showEndGame(winner) {
@@ -106,8 +106,14 @@ function showEndGame(winner) {
         endGame.classList.add('show');
         endGameResult.textContent = `¡${isTurnX ? 'X' : 'O'} ha ganado la partida!`;
     } else {
-        startGame();  // Reiniciar automáticamente en caso de empate
+        endGame.classList.add('show');
+        endGameResult.textContent = '¡Empate!';
     }
+}
+
+function updateScore(player) {
+    playerScores[player]++;
+    document.querySelector(`[data-player="${player}"]`).textContent = playerScores[player];
 }
 
 function playAudioOnFirstClick() {
@@ -117,23 +123,4 @@ function playAudioOnFirstClick() {
     });
 }
 
-function hasWinningPossibility() {
-    const cells = document.querySelectorAll('.cell');
-    const positions = Array.from(cells).map(cell => {
-        const img = cell.querySelector('img');
-        if (img && img.src.includes(images.cross)) return players.x;
-        if (img && img.src.includes(images.circle)) return players.o;
-        return null;
-    });
-
-    return winningPosition.some(array => {
-        const [a, b, c] = array;
-        const values = [positions[a], positions[b], positions[c]];
-        return values.includes(null) || 
-            (values.filter(v => v === players.x).length > 0 && values.filter(v => v === players.o).length === 0) ||
-            (values.filter(v => v === players.o).length > 0 && values.filter(v => v === players.x).length === 0);
-    });
-}
-
-// Evento de botón
 buttonReset.addEventListener('click', startGame);

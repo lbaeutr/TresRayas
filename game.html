@@ -7,13 +7,23 @@
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <div class="game">
-        <article data-id="game__message">
-            <h2>El turno es para... 
-                <span class="game__turn"></span>
-            </h2>
-        </article>
-        <section class="game__board"></section>
+    <div class="scoreboard">
+        <div class="scoreboard__player" style="height: 30%;">
+            <h3>Jugador X</h3>
+            <p class="scoreboard__score" data-player="x">0</p>
+        </div>
+        <div class="game">
+            <article data-id="game__message">
+                <h2>El turno es para... 
+                    <span class="game__turn"></span>
+                </h2>
+            </article>
+            <section class="game__board"></section>
+        </div>
+        <div class="scoreboard__player" style="height: 30%;">
+            <h3>Jugador O</h3>
+            <p class="scoreboard__score" data-player="o">0</p>
+        </div>
     </div>
     <section class="endgame">
         <div class="endgame__show">
@@ -22,7 +32,6 @@
             <button class="endgame__button">Reiniciar el juego</button>
         </div>
     </section>
-    
     <audio id="musica-fondo" src="music/musicaFondo.mp3" loop></audio>
     <script src="library.js"></script>
 </body>
