@@ -158,7 +158,7 @@ h2 {
 }
 
 .scoreboard__player {
-    background-color: antiquewhite;
+    
     padding: 0.5rem 1rem;
     border-radius: 10px;
     text-align: center;
@@ -167,9 +167,20 @@ h2 {
     font-size: 0.9rem;
     margin-top: 2rem; 
     max-width: auto;
-    max-height: auto;/* Ajusta este valor según tus necesidades */
+    max-height: auto;
+}
+.scoreboard__player[data-player="x"] {
+    background-size: cover;
+    background-position: center;
+    background-image: url('images/Flag_of_Argentina.svg');
 }
 
+.scoreboard__player[data-player="o"] {
+    background-image: url('images/Bandera_de_España.svg');
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: 50%;
+}
 .scoreboard__player h3 {
     margin-bottom: 0.3rem;
     font-size: 1rem;
