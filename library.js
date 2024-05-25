@@ -33,6 +33,9 @@ const winningPosition = [
     [2, 4, 6]
 ];
 
+let lastStarterWasX = true;
+let lastMove = null;
+
 // Select player elements
 const playerXElement = document.querySelector('.scoreboard__player[data-player="x"]');
 const playerOElement = document.querySelector('.scoreboard__player[data-player="o"]');
@@ -41,12 +44,13 @@ startGame();
 
 function startGame() {
     createBoard();
-    //messageTurn.textContent = isTurnX ? 'X' : 'O';
-    isTurnX = true;
+    isTurnX = !lastStarterWasX;
+    lastStarterWasX = isTurnX;
+
     turn = 0;
     endGame.classList.remove('show');
     gameBoard.addEventListener('click', playAudioOnFirstClick, { once: true });
-    highlightCurrentPlayer(); // Highlight the current player at the start
+    highlightCurrentPlayer(); 
 }
 
 function createBoard() {
@@ -59,16 +63,22 @@ function createBoard() {
     for (let i = 0; i < cells; i++) {
         const div = document.createElement('div');
         div.classList.add('cell');
-        div.addEventListener('click', handleGame, { once: true });
+        div.addEventListener('click', handleGame);
         gameBoard.appendChild(div);
     }
 }
 
 function handleGame(e) {
     const currentCell = e.currentTarget;
+    if (currentCell.querySelector('img')) {
+        return;
+    }
+
     const currentTurn = isTurnX ? players.x : players.o;
     turn++;
     drawShape(currentCell, currentTurn);
+
+    lastMove = currentCell;
 
     if (checkWinner(currentTurn)) {
         updateScore(isTurnX ? 'x' : 'o');
@@ -77,10 +87,13 @@ function handleGame(e) {
     }
 
     if (turn === maxTurn) {
-        showEndGame(false);
-    } else {
-        changeTurn();
+        // Empate - eliminar todas las fichas excepto la última
+        resetBoardExceptLastMove();
+        turn = 1; // Se cuenta la última ficha
+        return;
     }
+
+    changeTurn();
 }
 
 function drawShape(element, player) {
@@ -91,19 +104,15 @@ function drawShape(element, player) {
 
 function changeTurn() {
     isTurnX = !isTurnX;
-    //messageTurn.textContent = isTurnX ? 'X' : 'O';
-    highlightCurrentPlayer(); // Highlight the current player after the turn changes
+    highlightCurrentPlayer(); 
     
-    // Remover la clase 'scoreboard__player--active' de todos los jugadores
     document.querySelectorAll('.scoreboard__player').forEach(player => {
         player.classList.remove('scoreboard__player--active');
     });
     
-    // Agregar la clase 'scoreboard__player--active' al jugador actual
     const currentPlayerElement = document.querySelector(`.scoreboard__player[data-player="${isTurnX ? 'x' : 'o'}"]`);
     currentPlayerElement.classList.add('scoreboard__player--active');
 }
-
 
 function checkWinner(player) {
     const cells = document.querySelectorAll('.cell');
@@ -120,12 +129,11 @@ function checkWinner(player) {
 function showEndGame(winner) {
     if (winner) {
         endGame.classList.add('show');
-        endGameResult.textContent = `¡${isTurnX ? 'Milei' : 'Perro'} ha ganado la partida!\n `;
+        endGameResult.textContent = `¡${isTurnX ? 'Milei' : 'Pedro'} ha ganado la partida!\n `;
         playMusicForResult(isTurnX ? 'x' : 'o');
     } else {
         endGame.classList.add('show');
         endGameResult.textContent = '¡Empate!';
-        // Aquí podrías reproducir música para empate si deseas
     }
 }
 
@@ -144,7 +152,6 @@ function playMusicForResult(player) {
     }
 }
 
-
 function updateScore(player) {
     playerScores[player]++;
     document.querySelector(`.scoreboard__player[data-player="${player}"] .scoreboard__score`).textContent = playerScores[player];
@@ -161,15 +168,27 @@ function highlightCurrentPlayer() {
     if (isTurnX) {
         playerXElement.classList.add('scoreboard__player--active');
         playerOElement.classList.remove('scoreboard__player--active');
-        playerOElement.classList.add('scoreboard__player2--active'); // Agregar la clase scoreboard__player2--active cuando sea el turno de O
+        playerOElement.classList.add('scoreboard__player2--active'); 
     } else {
         playerXElement.classList.remove('scoreboard__player--active');
         playerOElement.classList.add('scoreboard__player--active');
-        playerOElement.classList.remove('scoreboard__player2--active'); // Remover la clase scoreboard__player2--active cuando sea el turno de X
+        playerOElement.classList.remove('scoreboard__player2--active'); 
     }
 }
 
+function resetBoardExceptLastMove() {
+    const cells = document.querySelectorAll('.cell');
+    
+    cells.forEach(cell => {
+        if (cell !== lastMove) {
+            cell.innerHTML = '';
+            cell.addEventListener('click', handleGame, { once: true });
+        }
+    });
 
+    // Cambiar el turno después de limpiar el tablero
+    isTurnX = !isTurnX; // Cambiar el turno al otro jugador
+    highlightCurrentPlayer(); // Actualizar la visualización del turno
+}
 
 buttonReset.addEventListener('click', startGame);
-

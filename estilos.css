@@ -271,3 +271,4 @@ h2 {
 .scoreboard__player--active .scoreboard__image {
     animation: bounce 1s infinite alternate; /* Aplicar la animación solo cuando el jugador está activo */
 }
+
