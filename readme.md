@@ -40,4 +40,5 @@ Las contribuciones son bienvenidas. Si deseas mejorar el juego o agregar nuevas 
 ## Creadores 
 
 [Cristobal Navas](https://github.com/CnmDev07)
+<br>
 [Luis Baena](https://github.com/lbaeutr)

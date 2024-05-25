@@ -1,38 +1,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-*, ::before, ::after {
+/* Estilos de reinicio para todos los elementos */
+*,
+::before,
+::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilos generales del cuerpo del documento */
 body {
     background-color: #2c3e50;
+    /* Color de fondo */
     background-image: url("data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 70 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2397b1cc' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 0h35v35H0V0zm5 5h25v25H5V5zm5 5h15v15H10V10zm5 5h5v5h-5v-5zM40 5h25v25H40V5zm5 5h15v15H45V10zm5 5h5v5h-5v-5zM70 35H35v35h35V35zm-5 5H40v25h25V40zm-5 5H45v15h15V45zm-5 5h-5v5h5v-5zM30 40H5v25h25V40zm-5 5H10v15h15V45zm-5 5h-5v5h5v-5z'/%3E%3C/g%3E%3C/svg%3E");
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    /* Fuente */
     color: #ecf0f1;
+    /* Color de texto */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    /* Tamaño de la ventana */
 }
 
 h2 {
     color: #2c3e50;
+    /* Color del encabezado */
 }
 
+/* Estilos para el contenedor principal del juego */
 .game {
     display: grid;
     gap: 1rem;
     place-content: center;
     background-color: antiquewhite;
+    /* Color de fondo */
     background-image: url("data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 70 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23070e14' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 0h35v35H0V0zm5 5h25v25H5V5zm5 5h15v15H10V10zm5 5h5v5h-5v-5zM40 5h25v25H40V5zm5 5h15v15H45V10zm5 5h5v5h-5v-5zM70 35H35v35h35V35zm-5 5H40v25h25V40zm-5 5H45v15h15V45zm-5 5h-5v5h5v-5zM30 40H5v25h25V40zm-5 5H10v15h15V45zm-5 5h-5v5h5v-5z'/%3E%3C/g%3E%3C/svg%3E");
     padding: 2rem;
+    /* Espaciado interior */
     border-radius: 10px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); 
+    /* Borde redondeado */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+    /* Sombra */
     align-items: center;
 }
 
+/* Estilos para el tablero de juego */
 .game__board {
     width: 600px;
     height: 600px;
@@ -43,29 +58,37 @@ h2 {
     align-items: center;
 }
 
+/* Estilos para cada celda del tablero */
 .cell {
     width: 100%;
     height: 100%;
     background-color: #abbac9;
+    /* Color de fondo de la celda */
     border-radius: 10px;
+    /* Borde redondeado */
     display: grid;
     place-items: center;
     cursor: pointer;
+    /* Cambia el cursor al pasar sobre la celda */
     transition: transform 0.2s ease;
+    /* Transición suave al interactuar */
 }
 
+/* Estilos para las imágenes dentro de las celdas */
 .cell img {
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
 }
 
+/* Efecto de agrandamiento al pasar el ratón sobre la celda */
 .cell:hover {
     transform: scale(1.1);
     border: 3px solid #000000;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
 }
 
+/* Estilos para el efecto de círculo */
 .circle::after {
     content: "";
     display: block;
@@ -76,7 +99,9 @@ h2 {
     animation: show .7s;
 }
 
-.cross::after, .cross::before {
+/* Estilos para el efecto de cruz */
+.cross::after,
+.cross::before {
     content: "";
     display: block;
     width: 10px;
@@ -95,17 +120,21 @@ h2 {
     transform: rotate(-45deg);
 }
 
+/* Animación de aparición */
 @keyframes show {
     0% {
         transform: scale(0);
     }
+
     100% {
         transform: scale(1);
     }
 }
 
+/* Estilos para la sección de fin de juego */
 .endgame {
     background-color: rgba(0, 0, 0, 0.7);
+    /* Color de fondo semitransparente */
     position: fixed;
     top: 0;
     left: 0;
@@ -119,100 +148,153 @@ h2 {
     align-items: center;
 }
 
+/* Estilos para el contenedor de finalización del juego cuando se muestra */
 .endgame.show {
     opacity: 1;
+    /* Opacidad completa */
     pointer-events: all;
+    /* Permitir eventos de puntero */
 }
 
+/* Estilos para el contenido del contenedor de finalización del juego */
 .endgame__show {
     background-color: #2c3e50;
+    /* Color de fondo */
     padding: 2rem;
+    /* Espaciado interior */
     border-radius: 10px;
+    /* Borde redondeado */
     text-align: center;
+    /* Alineación del texto al centro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Sombra */
 }
 
 .endgame__result {
     font-size: 2rem;
+    /* Tamaño de fuente */
     margin-bottom: 1rem;
+    /* Margen inferior */
 }
 
 .endgame__button {
     background-color: #3498db;
+    /* Color de fondo del botón */
     color: #ecf0f1;
+    /* Color del texto */
     font-weight: bold;
+    /* Peso de la fuente */
     padding: 1rem 2rem;
+    /* Relleno */
     border: none;
+    /* Sin borde */
     border-radius: 50px;
+    /* Borde redondeado */
     cursor: pointer;
+    /* Cursor de puntero */
     transition: background-color 0.3s ease;
+    /* Transición de color de fondo */
 }
 
 .endgame__button:hover {
     background-color: #2980b9;
+    /* Color de fondo al pasar el ratón */
 }
 
+/* Estilos para el marcador */
 .scoreboard {
     display: flex;
+    /* Mostrar como flexbox */
     justify-content: space-around;
+    /* Distribuir el espacio uniformemente */
     align-items: center;
+    /* Alinear elementos verticalmente */
     margin-bottom: 1rem;
+    /* Margen inferior */
     width: 100%;
+    /* Ancho completo */
 }
 
+/* Estilos para cada jugador en el marcador */
 .scoreboard__player {
-    
     padding: 0.5rem 1rem;
+    /* Relleno interno */
     border-radius: 10px;
+    /* Borde redondeado */
     text-align: center;
+    /* Alineación del texto al centro */
     color: #383b3c;
+    /* Color del texto */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Sombra */
     font-size: 0.9rem;
-    margin-top: 2rem; 
+    margin-top: 2rem;
     max-width: auto;
     max-height: auto;
 }
+
+/* Estilos específicos para el jugador X */
 .scoreboard__player[data-player="x"] {
     background-size: cover;
+    /* Ajustar tamaño de fondo */
     background-position: center;
+    /* Posición del fondo */
     background-image: url('images/Flag_of_Argentina.svg');
+    /* Imagen de fondo */
     margin-left: 100px;
+    /* Margen izquierdo */
 }
 
+/* Estilos específicos para el jugador O */
 .scoreboard__player[data-player="o"] {
     background-image: url('images/Bandera_de_España.svg');
+    /* Imagen de fondo */
     background-size: cover;
+    /* Ajustar tamaño de fondo */
     background-position-x: center;
+    /* Posición del fondo horizontal */
     background-position-y: -20px;
+    /* Posición del fondo vertical */
     margin-right: 100px;
+    /* Margen derecho */
 }
+
+/* Estilos para el título del jugador */
 .scoreboard__player h3 {
     margin-bottom: 0.3rem;
+    /* Margen inferior */
     font-size: 1rem;
+    /* Tamaño de la fuente */
 }
 
+/* Estilos para la puntuación del jugador */
 .scoreboard__score {
     font-size: 4rem;
+    /* Tamaño de la fuente */
     font-weight: bold;
+    /* Peso de la fuente */
 }
 
+/* Ajustes de posición para los jugadores X y O */
 .scoreboard__player.player-x {
-    margin-left: 100px; /* Ajusta la posición según sea necesario */
+    margin-left: 100px;
+    /* Margen izquierdo */
 }
 
 .scoreboard__player.player-o {
-    margin-right: 100px; /* Ajusta la posición según sea necesario */
+    margin-right: 100px;
+    /* Margen derecho */
 }
 
-/* Si necesitas ajustar la posición de las imágenes específicamente */
+/* Ajustes de posición específicos para las imágenes de los jugadores */
 .scoreboard__player.player-x .scoreboard__image {
     position: relative;
-    top: 17px; /* Ajusta la posición según sea necesario */
+    top: 17px;
 }
 
 .scoreboard__player.player-o .scoreboard__image {
     position: relative;
-    top: 24px; /* Ajusta la posición según sea necesario */
+    top: 24px;
 }
 
 /* Animaciones específicas para cada jugador */
@@ -224,51 +306,93 @@ h2 {
     animation: bounce-o 1s infinite alternate;
 }
 
+/* Animación para el jugador X */
 @keyframes bounce-x {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+        /* Escala inicial */
+    }
+
+    50% {
+        transform: scale(1.1);
+        /* Escala intermedia */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Escala final */
+    }
 }
 
+/* Animación para el jugador O */
 @keyframes bounce-o {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+        /* Escala inicial */
+    }
+
+    50% {
+        transform: scale(1.2);
+        /* Escala intermedia */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Escala final */
+    }
 }
 
-
+/* Estilos para las imágenes de los jugadores en el marcador */
 .scoreboard__image {
-    width: 150px; /* Ajusta este valor según el tamaño deseado */
-    height: 150px; /* Ajusta este valor según el tamaño deseado */
-    object-fit: contain; /* Asegura que la imagen mantenga sus proporciones */
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    /* Ajustar imagen dentro del contenedor */
     margin-bottom: 0.5rem;
-    position:relative;
+    position: relative;
     top: 24px;
 }
 
+/* Estilos para resaltar el jugador activo */
 .scoreboard__player--active {
-    border: 3px solid #494138; /* Cambia el color según tus preferencias */
-    box-shadow: 0 0 100px rgba(188, 197, 244, 0.8); /* Efecto de brillo */
+    border: 3px solid #494138;
+    /* Borde resaltado */
+    box-shadow: 0 0 100px rgba(188, 197, 244, 0.8);
+    /* Efecto de brillo */
 }
 
 /* Definir la animación */
 @keyframes bounce {
-    0% { transform: scale(); }
-    50% { transform: scale(1.21); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale();
+        /* Escala inicial */
+    }
+
+    50% {
+        transform: scale(1.21);
+        /* Escala intermedia */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Escala final */
+    }
 }
 
 /* Aplicar la animación a todas las imágenes de marcador */
 .scoreboard__image {
-    transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
+    transition: transform 0.5s ease;
+    /* Transición suave */
 }
+
 .scoreboard__milei {
-    transition: transform 0.5s ease; /* Agregar una transición para una animación suave */
+    transition: transform 0.5s ease;
+    /* Transición suave */
 }
 
 
 /* Agregar la clase de animación cuando sea el turno del jugador */
 .scoreboard__player--active .scoreboard__image {
-    animation: bounce 1s infinite alternate; /* Aplicar la animación solo cuando el jugador está activo */
+    animation: bounce 1s infinite alternate;
+    /* Aplicar la animación solo cuando el jugador está activo */
 }
-

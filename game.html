@@ -1,38 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang="en"> 
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tres en Raya</title>
-    <link rel="stylesheet" href="estilos.css">
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Tres en Raya</title> 
+    <link rel="stylesheet" href="estilos.css"> 
 </head>
+
 <body>
-    
-    
-    <div class="scoreboard">
+    <div class="scoreboard"> <!-- Contenedor del marcador de puntuación y el tablero de juego -->
+        <!-- Marcador de puntuación del jugador X -->
         <div class="scoreboard__player player-x" data-player="x" style="height: 30%;">
-            <img src="images/milei.png" alt="Cross" class="scoreboard__image">
-            <p class="scoreboard__score" data-player="x">0</p>
+            <img src="images/milei.png" alt="Cross" class="scoreboard__image"> <!-- Imagen del jugador X -->
+            <p class="scoreboard__score" data-player="x">0</p> <!-- Puntuación del jugador X -->
         </div>
-        <div class="game">
-            <section class="game__board"></section>
+        <div class="game"> <!-- Contenedor del tablero de juego -->
+            <section class="game__board"></section> <!-- Sección donde se renderizará el tablero de juego -->
         </div>
+        <!-- Marcador de puntuación del jugador O -->
         <div class="scoreboard__player player-o" data-player="o" style="height: 30%;">
-            <img src="images/pedro.png" alt="Circle" class="scoreboard__image">
-            <p class="scoreboard__score" data-player="o">0</p>
-            <span class="game__turn"; ></span>
+            <img src="images/pedro.png" alt="Circle" class="scoreboard__image"> <!-- Imagen del jugador O -->
+            <p class="scoreboard__score" data-player="o">0</p> <!-- Puntuación del jugador O -->
+            <span class="game__turn"; ></span> <!-- Elemento para indicar de quién es el turno -->
         </div>
     </div>
-    
-    
-    <section class="endgame">
+
+    <section class="endgame"> <!-- Sección para mostrar el resultado final del juego -->
         <div class="endgame__show">
-            <h1 class="endgame__result">¡!</h1>
-            <p>¿Quieres volver a jugar?</p>
-            <button class="endgame__button">Reiniciar el juego</button>
+            <h1 class="endgame__result">¡!</h1> <!-- Elemento para mostrar el resultado del juego -->
+            <p>¿Quieres volver a jugar?</p> <!-- Mensaje para preguntar si se quiere volver a jugar -->
+            <button class="endgame__button">Reiniciar el juego</button> <!-- Botón para reiniciar el juego -->
         </div>
     </section>
-    <audio id="musica-fondo" src="music/musicaFondo.mp3" loop></audio>
-    <script src="library.js"></script>
+
+    <audio id="musica-fondo" src="music/musicaFondo.mp3" loop></audio> <!-- Elemento de audio para la música de fondo -->
+
+    <script src="library.js"></script> 
 </body>
 </html>
