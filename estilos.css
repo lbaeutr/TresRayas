@@ -48,7 +48,7 @@ h2 {
 }
 
 /* Estilos para el tablero de juego */
-.game__board {
+.tablero_juego {
     width: 600px;
     height: 600px;
     display: grid;
@@ -132,7 +132,7 @@ h2 {
 }
 
 /* Estilos para la sección de fin de juego */
-.endgame {
+.finjuego {
     background-color: rgba(0, 0, 0, 0.7);
     /* Color de fondo semitransparente */
     position: fixed;
@@ -149,7 +149,7 @@ h2 {
 }
 
 /* Estilos para el contenedor de finalización del juego cuando se muestra */
-.endgame.show {
+.finjuego.show {
     opacity: 1;
     /* Opacidad completa */
     pointer-events: all;
@@ -177,7 +177,7 @@ h2 {
     /* Margen inferior */
 }
 
-.endgame__button {
+.botonFinjuego {
     background-color: #3498db;
     /* Color de fondo del botón */
     color: #ecf0f1;
@@ -196,13 +196,13 @@ h2 {
     /* Transición de color de fondo */
 }
 
-.endgame__button:hover {
+.botonFinjuego:hover {
     background-color: #2980b9;
     /* Color de fondo al pasar el ratón */
 }
 
 /* Estilos para el marcador */
-.scoreboard {
+.tablero {
     display: flex;
     /* Mostrar como flexbox */
     justify-content: space-around;
@@ -268,7 +268,7 @@ h2 {
 }
 
 /* Estilos para la puntuación del jugador */
-.scoreboard__score {
+.tablero_puntuacion {
     font-size: 4rem;
     /* Tamaño de la fuente */
     font-weight: bold;

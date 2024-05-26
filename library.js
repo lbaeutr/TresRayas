@@ -1,29 +1,29 @@
 // Seleccionar elementos del DOM y definir variables de estado
 const audio = document.getElementById('musica-fondo');
-const gameBoard = document.querySelector('.game__board');
-const messageTurn = document.querySelector('.game__turn');
-const endGame = document.querySelector('.endgame');
-const endGameResult = document.querySelector('.endgame__result');
-const buttonReset = document.querySelector('.endgame__button');
-const playerScores = {
+const tablero = document.querySelector('.tablero_juego');
+const mensajeTurno = document.querySelector('.turno_juego');
+const finJuego = document.querySelector('.finjuego');
+const resultadoFinal = document.querySelector('.endgame__result');
+const botonReset = document.querySelector('.botonFinjuego');
+const marcador = {
     x: 0,
     o: 0
 };
 
-let isTurnX = true; // Indica de quién es el turno actual
-let turn = 0; // Contador de turnos
-const maxTurn = 9; // Número máximo de turnos en una partida
-const players = {// Configuración de los jugadores
+let turnoX = true; // Indica de quién es el turno actual
+let turno = 0; // Contador de turnos
+const maximoTurnos = 9; // Número máximo de turnos en una partida
+const jugadores = {// Configuración de los jugadores
     x: 'cross',
     o: 'circle'
 };
 // Imágenes asociadas a los jugadores
-const images = {
+const imagenes = {
     cross: 'images/milei.png',
     circle: 'images/pedro.png'
 };
 // Posiciones ganadoras posibles
-const winningPosition = [
+const posicionVictorias = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -34,156 +34,156 @@ const winningPosition = [
     [2, 4, 6]
 ];
 
-let lastStarterWasX = true;// Indica quién comenzó la última partida
-let lastMove = null;// Último movimiento realizado
+let indiceUltimo = true;// Indica quién comenzó la última partida
+let ultimoMovimiento = null;// Último movimiento realizado
 // Seleccionar elementos de los jugadores
 
-const playerXElement = document.querySelector('.scoreboard__player[data-player="x"]');
-const playerOElement = document.querySelector('.scoreboard__player[data-player="o"]');
+const jugadorXelement = document.querySelector('.scoreboard__player[data-player="x"]');
+const jugadorOelement = document.querySelector('.scoreboard__player[data-player="o"]');
 
 
 // Iniciar el juego al cargar la página
-startGame();
+iniciarJuego();
 
-function startGame() {
-    createBoard();// Crear el tablero
-    isTurnX = !lastStarterWasX; // Cambiar el turno de ser necesario
-    lastStarterWasX = isTurnX; // Actualizar quién comenzó la última partida
+function iniciarJuego() {
+    crearTablero();// Crear el tablero
+    turnoX = !indiceUltimo; // Cambiar el turno de ser necesario
+    indiceUltimo = turnoX; // Actualizar quién comenzó la última partida
 
-    turn = 0; // Reiniciar el contador de turnos
-    endGame.classList.remove('show'); // Ocultar el mensaje de fin de juego
-    gameBoard.addEventListener('click', playAudioOnFirstClick, { once: true });// Escuchar primer clic en el tablero
-    highlightCurrentPlayer();// Resaltar el jugador activo
+    turno = 0; // Reiniciar el contador de turnos
+    finJuego.classList.remove('show'); // Ocultar el mensaje de fin de juego
+    tablero.addEventListener('click', audioPrimerClick, { once: true });// Escuchar primer clic en el tablero
+    resaltarJugador();// Resaltar el jugador activo
 }
 // Función para crear el tablero del juego
-function createBoard() {
+function crearTablero() {
     const cells = 9; // Número de celdas en el tablero
     // Eliminar celdas existentes en el tablero
-    while (gameBoard.firstChild) {
-        gameBoard.removeChild(gameBoard.firstChild);
+    while (tablero.firstChild) {
+        tablero.removeChild(tablero.firstChild);
     }
     // Crear nuevas celdas en el tablero
     for (let i = 0; i < cells; i++) {
         const div = document.createElement('div');
         div.classList.add('cell');
-        div.addEventListener('click', handleGame);
-        gameBoard.appendChild(div);
+        div.addEventListener('click', manejarJuego);
+        tablero.appendChild(div);
     }
 }
 
-function handleGame(e) {
-    const currentCell = e.currentTarget;// Obtiene la celda actual que se hizo clic
-    if (currentCell.querySelector('img')) {// Verifica si la celda ya está ocupada
+function manejarJuego(e) {
+    const celdaActual = e.currentTarget;// Obtiene la celda actual que se hizo clic
+    if (celdaActual.querySelector('img')) {// Verifica si la celda ya está ocupada
         return; // Si la celda ya tiene una imagen, termina la función y no hace nad
     }
 
-    const currentTurn = isTurnX ? players.x : players.o;// Determina el jugador actual basado en el turno
-    turn++;// Incrementa el contador de turnos
+    const turnoActual = turnoX ? jugadores.x : jugadores.o;// Determina el jugador actual basado en el turno
+    turno++;// Incrementa el contador de turnos
 
-    drawShape(currentCell, currentTurn);// Dibuja la forma del jugador actual en la celda
+    formaJugador(celdaActual, turnoActual);// Dibuja la forma del jugador actual en la celda
 
-    lastMove = currentCell;  // Registra el último movimiento realizado
+    ultimoMovimiento = celdaActual;  // Registra el último movimiento realizado
 
-    if (checkWinner(currentTurn)) {// Verifica si el jugador actual ha ganado
-        updateScore(isTurnX ? 'x' : 'o');// Actualiza el marcador del jugador ganador
-        showEndGame(true); // Muestra el mensaje de fin de juego indicando que hay un ganador
+    if (comprobacionGanador(turnoActual)) {// Verifica si el jugador actual ha ganado
+        incrementoPuntuacion(turnoX ? 'x' : 'o');// Actualiza el marcador del jugador ganador
+        muestraFinJuego(true); // Muestra el mensaje de fin de juego indicando que hay un ganador
         return;
     }
 
-    if (turn === maxTurn) { // Verifica si se ha alcanzado el máximo de turnos (empate)
+    if (turno === maximoTurnos) { // Verifica si se ha alcanzado el máximo de turnos (empate)
         // Empate - eliminar todas las fichas excepto la última
-        resetBoardExceptLastMove();
-        turn = 1; // Se cuenta la última ficha
+        reiniciarTableroMenosUltimoMovimiento();
+        turno = 1; // Se cuenta la última ficha
         return;
     }
 
-    changeTurn(); // Cambia el turno al siguiente jugador
+    cambiarTurno(); // Cambia el turno al siguiente jugador
 }
 
-function drawShape(element, player) {
+function formaJugador(elemento, jugador) {
     // Crea un elemento <img>
     const img = document.createElement('img');
     // Asigna la fuente de la imagen según el jugador actual
-    img.src = images[player];
+    img.src = imagenes[jugador];
     // Agrega la imagen como hijo del elemento proporcionado (celda del tablero)
 
-    element.appendChild(img);
+    elemento.appendChild(img);
 }
 
-function changeTurn() {
+function cambiarTurno() {
     // Cambia el turno al siguiente jugador
-    isTurnX = !isTurnX;
+    turnoX = !turnoX;
     // Resalta al jugador actual en la interfaz
 
-    highlightCurrentPlayer();
+    resaltarJugador();
     // Quita la clase 'scoreboard__player--active' de todos los jugadores
 
-    document.querySelectorAll('.scoreboard__player').forEach(player => {
-        player.classList.remove('scoreboard__player--active');
+    document.querySelectorAll('.scoreboard__player').forEach(jugador => {
+        jugador.classList.remove('scoreboard__player--active');
     });
     // Selecciona al jugador actual y le añade la clase 'scoreboard__player--active'
 
-    const currentPlayerElement = document.querySelector(`.scoreboard__player[data-player="${isTurnX ? 'x' : 'o'}"]`);
+    const currentPlayerElement = document.querySelector(`.scoreboard__player[data-player="${turnoX ? 'x' : 'o'}"]`);
     currentPlayerElement.classList.add('scoreboard__player--active');
 }
 
-function checkWinner(player) {
+function comprobacionGanador(jugador) {
     // Obtén todas las celdas del tablero
 
-    const cells = document.querySelectorAll('.cell');
+    const celdas = document.querySelectorAll('.cell');
     // Verifica si alguna combinación de celdas forma una línea ganadora para el jugador actual
 
-    const winner = winningPosition.some(array => {
-        return array.every(position => {
+    const ganador = posicionVictorias.some(array => {
+        return array.every(posicion => {
             // Verifica si todas las celdas en la combinación actual contienen la imagen del jugador actual
 
-            return cells[position].querySelector('img')?.src.includes(images[player]);
+            return celdas[posicion].querySelector('img')?.src.includes(imagenes[jugador]);
         });
     });
     // Devuelve true si hay un ganador, de lo contrario, devuelve false
-    return winner;
+    return ganador;
 }
 
-function showEndGame(winner) {
+function muestraFinJuego(ganador) {
     // Muestra el mensaje de fin de juego
-    if (winner) {
+    if (ganador) {
         // Si hay un ganador, muestra el mensaje con el nombre del ganador y reproduce la música correspondiente
-        endGame.classList.add('show');
-        endGameResult.textContent = `¡${isTurnX ? 'Milei' : 'Pedro'} ha ganado la partida!\n `;
-        playMusicForResult(isTurnX ? 'x' : 'o');
+        finJuego.classList.add('show');
+        resultadoFinal.textContent = `¡${turnoX ? 'Milei' : 'Pedro'} ha ganado la partida!\n `;
+        musicaVictoria(turnoX ? 'x' : 'o');
     } else {
         // Si hay un empate, muestra el mensaje de empate
-        endGame.classList.add('show');
-        endGameResult.textContent = '¡Empate!';
+        finJuego.classList.add('show');
+        resultadoFinal.textContent = '¡Empate!';
     }
 }
 
-function playMusicForResult(player) {
+function musicaVictoria(jugador) {
     // Crea objetos de audio para las victorias de X y O
-    const musicForXWin = new Audio('music/audio miley.mp3');
-    const musicForOWin = new Audio('music/PedroPedro.mp3');
+    const musicaGanadorX = new Audio('music/audio miley.mp3');
+    const musicaGanadorO = new Audio('music/PedroPedro.mp3');
     // Reproduce la música correspondiente según el jugador que ganó
-    if (player === 'x') {
+    if (jugador === 'x') {
         // Reproduce la música para la victoria de X y maneja cualquier error
 
-        musicForXWin.play().catch(error => {
+        musicaGanadorX.play().catch(error => {
             console.log('Error al reproducir la música para la victoria de X:', error);
         });
-    } else if (player === 'o') {
+    } else if (jugador === 'o') {
         // Reproduce la música para la victoria de O y maneja cualquier error
-        musicForOWin.play().catch(error => {
+        musicaGanadorO.play().catch(error => {
             console.log('Error al reproducir la música para la victoria de O:', error);
         });
     }
 }
 
-function updateScore(player) {
+function incrementoPuntuacion(jugador) {
     // Incrementa la puntuación del jugador y actualiza la visualización de la puntuación
-    playerScores[player]++;
-    document.querySelector(`.scoreboard__player[data-player="${player}"] .scoreboard__score`).textContent = playerScores[player];
+    marcador[jugador]++;
+    document.querySelector(`.scoreboard__player[data-player="${jugador}"] .tablero_puntuacion`).textContent = marcador[jugador];
 }
 
-function playAudioOnFirstClick() {
+function audioPrimerClick() {
     // Reproduce el audio de fondo en el primer clic y maneja cualquier error
     console.log('Reproduciendo audio...');
     audio.play().catch(error => {
@@ -191,33 +191,33 @@ function playAudioOnFirstClick() {
     });
 }
 
-function highlightCurrentPlayer() {
+function resaltarJugador() {
     // Resalta al jugador actual en la interfaz
-    if (isTurnX) {
-        playerXElement.classList.add('scoreboard__player--active');
-        playerOElement.classList.remove('scoreboard__player--active');
-        playerOElement.classList.add('scoreboard__player2--active');
+    if (turnoX) {
+        jugadorXelement.classList.add('scoreboard__player--active');
+        jugadorOelement.classList.remove('scoreboard__player--active');
+        jugadorOelement.classList.add('scoreboard__player2--active');
     } else {
-        playerXElement.classList.remove('scoreboard__player--active');
-        playerOElement.classList.add('scoreboard__player--active');
-        playerOElement.classList.remove('scoreboard__player2--active');
+        jugadorXelement.classList.remove('scoreboard__player--active');
+        jugadorOelement.classList.add('scoreboard__player--active');
+        jugadorOelement.classList.remove('scoreboard__player2--active');
     }
 }
 
-function resetBoardExceptLastMove() {
+function reiniciarTableroMenosUltimoMovimiento() {
     // Reinicia el tablero, eliminando todas las fichas excepto la última jugada
-    const cells = document.querySelectorAll('.cell');
+    const celda = document.querySelectorAll('.cell');
 
-    cells.forEach(cell => {
-        if (cell !== lastMove) {
+    celda.forEach(cell => {
+        if (cell !== ultimoMovimiento) {
             cell.innerHTML = '';// Elimina la ficha de la celda
-            cell.addEventListener('click', handleGame, { once: true });
+            cell.addEventListener('click', manejarJuego, { once: true });
         }
     });
 
     // Cambiar el turno después de limpiar el tablero
-    isTurnX = !isTurnX; // Cambiar el turno al otro jugador
-    highlightCurrentPlayer(); // Actualizar la visualización del turno
+    turnoX = !turnoX; // Cambiar el turno al otro jugador
+    resaltarJugador(); // Actualizar la visualización del turno
 }
 
-buttonReset.addEventListener('click', startGame);
+botonReset.addEventListener('click', iniciarJuego);
